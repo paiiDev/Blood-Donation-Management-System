@@ -1,8 +1,482 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Management System</title>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* Modern Blood Theme Colors */
+        :root {
+            --blood-red: #d32f2f;
+            --blood-dark: #9a0007;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Pyidaungsu', 'Padauk', sans-serif;
+            background-color: var(--light-bg);
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Navbar */
+        .navbar {
+            background: rgba(211, 47, 47, 0.95);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link {
+            position: relative;
+        }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                background: white;
+                bottom: 0;
+                left: 0;
+                transition: width 0.3s;
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+
+        /* Hero Section with Parallax Effect */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(rgba(154, 0, 7, 0.85), rgba(211, 47, 47, 0.75)), url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') fixed center/cover;
+            color: white;
+            padding: 150px 0 100px 0;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        /* Heartbeat Animation for Button */
+        @@keyframes heartbeat {
+            0%
+
+        {
+            transform: scale(1);
+        }
+
+        14% {
+            transform: scale(1.05);
+        }
+
+        28% {
+            transform: scale(1);
+        }
+
+        42% {
+            transform: scale(1.05);
+        }
+
+        70% {
+            transform: scale(1);
+        }
+
+        }
+
+        .btn-donate {
+            background-color: white;
+            color: var(--blood-red);
+            font-size: 1.3rem;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: 800;
+            border: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            animation: heartbeat 2s infinite;
+            transition: 0.3s;
+        }
+
+            .btn-donate:hover {
+                background-color: var(--blood-dark);
+                color: white;
+                box-shadow: 0 15px 25px rgba(211, 47, 47, 0.4);
+                animation: none;
+                transform: translateY(-3px);
+            }
+
+        /* SVG Wave Divider */
+        .custom-shape-divider-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+        }
+
+            .custom-shape-divider-bottom svg {
+                position: relative;
+                display: block;
+                width: calc(100% + 1.3px);
+                height: 60px;
+            }
+
+            .custom-shape-divider-bottom .shape-fill {
+                fill: var(--light-bg);
+            }
+
+        /* Guidelines Card with Modern Hover */
+        .guideline-card {
+            border: none;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+            .guideline-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: var(--blood-red);
+                transform: scaleX(0);
+                transition: transform 0.4s ease;
+                transform-origin: left;
+            }
+
+            .guideline-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 30px rgba(211, 47, 47, 0.15);
+            }
+
+                .guideline-card:hover::before {
+                    transform: scaleX(1);
+                }
+
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #fff0f0, #ffcaca);
+            color: var(--blood-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 20px auto;
+            transition: 0.3s;
+        }
+
+        .guideline-card:hover .icon-circle {
+            background: var(--blood-red);
+            color: white;
+            transform: rotateY(360deg);
+        }
+
+        /* Modal Enhancements */
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--blood-red), var(--blood-dark));
+            color: white;
+            border: none;
+            padding: 20px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #dee2e6;
+        }
+
+            .form-control:focus, .form-select:focus {
+                border-color: var(--blood-red);
+                box-shadow: 0 0 0 0.25rem rgba(211, 47, 47, 0.25);
+            }
+
+        /* Step Indicators */
+        .step-indicator {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--blood-red);
+            background-color: #ffefef;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand fs-4" href="#"><i class="fa-solid fa-droplet heartbeat-icon"></i> Save Life</a>
+            <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-toggle="navbarNav">
+                <i class="fa-solid fa-bars fs-3"></i>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center gap-3">
+                    <li class="nav-item"><a class="nav-link" href="#">ပင်မစာမျက်နှာ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#guidelines">သိထားရန်များ</a></li>
+                    <li class="nav-item"><a class="btn btn-outline-light rounded-pill px-4 ms-2" href="#"><i class="fa-solid fa-user-shield"></i> Admin Panel</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container" data-aos="zoom-in" data-aos-duration="1000">
+            <div class="hero-title">  သင့်ရဲ့ သွေးတစ်စက်က <br>သူတစ်ပါးအတွက် အသက်တစ်ချောင်း</div>
+            <p class="lead mb-5 fw-light" style="font-size: 1.3rem;">ခေတ်မီမြန်ဆန်သော စနစ်ဖြင့် ယနေ့ပဲ သွေးလှူဒါန်းပြီး လူ့အသက်များကို ကယ်တင်ပါ။</p>
+            <button class="btn btn-donate" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                <i class="fa-solid fa-heart-pulse me-2"></i> ယခုပဲ Booking လုပ်မည်
+            </button>
+        </div>
+        <!-- Animated Wave Bottom -->
+        <div class="custom-shape-divider-bottom">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Guidelines Section -->
+    <section id="guidelines" class="container py-5 mt-5">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="badge bg-danger mb-2 px-3 py-2 rounded-pill">Requirements</span>
+            <h2 class="fw-bold" style="color: var(--blood-dark);">သွေးမလှူမီ သိထားသင့်သောအချက်များ</h2>
+        </div>
+
+        <div class="row g-4 text-center">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card guideline-card p-4">
+                    <div class="icon-circle"><i class="fa-solid fa-user-check"></i></div>
+                    <h5 class="fw-bold">အသက်အရွယ်</h5>
+                    <p class="text-muted">သင်သည် အသက်(၁၈) နှစ်မှ (၅၅) နှစ်အတွင်းရှိသူ ဖြစ်ရမည်။</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card guideline-card p-4">
+                    <div class="icon-circle"><i class="fa-solid fa-weight-scale"></i></div>
+                    <h5 class="fw-bold">ကိုယ်အလေးချိန်</h5>
+                    <p class="text-muted">အမျိုးသားနှင့် အမျိုးသမီးအတွက် ကိုယ်အလေးချိန် ပေါင် (၁၂၀) အထက် ရှိရမည်။</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card guideline-card p-4">
+                    <div class="icon-circle"><i class="fa-solid fa-bed"></i></div>
+                    <h5 class="fw-bold">အိပ်စက်မှုနှင့် ရှောင်ကြဉ်ရန်</h5>
+                    <p class="text-muted">အိပ်ရေးဝစွာ အိပ်စက်ထားသူဖြစ်ရမည်။ အရက်သေစာ သောက်စားထားခြင်း မရှိသူ ဖြစ်ရပါမည်။</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="card guideline-card p-4">
+                    <div class="icon-circle"><i class="fa-solid fa-kit-medical"></i></div>
+                    <h5 class="fw-bold">ကျန်းမာရေးအခြေအနေ</h5>
+                    <p class="text-muted">လတ်တလော ရောဂါဝေဒနာ ခံစားနေရခြင်း မရှိသူ ဖြစ်ရပါမည်။</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
+                <div class="card guideline-card p-4">
+                    <div class="icon-circle"><i class="fa-solid fa-syringe"></i></div>
+                    <h5 class="fw-bold">ခန္ဓာကိုယ် ပြုပြင်ထားမှု</h5>
+                    <p class="text-muted">လွန်ခဲ့သော ၆ လအတွင်း ဆေးမင်ကြောင်ထိုးခြင်း၊ နားဖောက်ခြင်း၊ ဆေးအပ်စိုက်ခြင်း မရှိသူ ဖြစ်ရပါမည်။</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="card guideline-card p-4">
+                    <div class="icon-circle"><i class="fa-solid fa-person-dress"></i></div>
+                    <h5 class="fw-bold">အမျိုးသမီးများအတွက်</h5>
+                    <p class="text-muted">ကိုယ်ဝန်ဆောင်ခြင်း၊ နို့တိုက်ခြင်း၊ လတ်တလော ဓမ္မတာလာခြင်းတို့ မရှိသူ ဖြစ်ရပါမည်။</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Multi-Step Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header">
+                    <h4 class="modal-title fw-bold mb-0"><i class="fa-regular fa-calendar-check me-2"></i> သွေးလှူရန် ရက်ချိန်းယူမည် (Booking)</h4>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-5">
+                    <form action="#" method="POST" id="bookingForm">
+
+                        <!-- STEP 1: Location & Time -->
+                        <div id="step1">
+                            <div class="text-center">
+                                <span class="step-indicator"><i class="fa-solid fa-1 me-1"></i> အဆင့် (၁) - နေရာနှင့် အချိန် ရွေးချယ်ခြင်း</span>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold text-muted">သွေးလှူဌာန ရွေးချယ်ရန် (Center)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fa-solid fa-hospital"></i></span>
+                                    <select class="form-select" id="centerSelect" required>
+                                        <option value="" selected disabled>အဆင်ပြေမည့် ဆေးရုံ/ဌာန ရွေးချယ်ပါ</option>
+                                        <option value="1">လွိုင်လင် ပြည်သူ့ဆေးရုံကြီး</option>
+                                        <option value="2">ပင်လုံ ပြည်သူ့ဆေးရုံကြီး</option>
+                                        <option value="3">နမ့်စန် ပြည်သူ့ဆေးရုံကြီး</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold text-muted">ရက်စွဲ (Date)</label>
+                                    <input type="date" class="form-control" id="dateSelect" required>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold text-muted">အချိန် (Time Slot)</label>
+                                    <select class="form-select" id="timeSelect" required>
+                                        <option value="" selected disabled>အချိန် ရွေးချယ်ပါ</option>
+                                        <option value="T1">09:00 AM - 10:00 AM</option>
+                                        <option value="T2">10:00 AM - 11:00 AM</option>
+                                        <option value="T3">01:00 PM - 02:00 PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-end">
+                                <button type="button" class="btn text-white fw-bold px-4 py-2 rounded-pill" id="btnNext" style="background: var(--blood-red); box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4);">
+                                    ရှေ့ဆက်မည် (Next) <i class="fa-solid fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 2: Personal Information -->
+                        <div id="step2" class="d-none">
+                            <div class="text-center">
+                                <span class="step-indicator"><i class="fa-solid fa-2 me-1"></i> အဆင့် (၂) - ကိုယ်ရေးအချက်အလက် ဖြည့်သွင်းခြင်း</span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold text-muted">အမည် (Full Name)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fa-regular fa-user"></i></span>
+                                        <input type="text" class="form-control" placeholder="ဥပမာ - မောင်မောင်" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold text-muted">သွေးအုပ်စု (Blood Group)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light text-danger"><i class="fa-solid fa-droplet"></i></span>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>ရွေးချယ်ပါ</option>
+                                            <option>A+</option>
+                                            <option>A-</option>
+                                            <option>B+</option>
+                                            <option>B-</option>
+                                            <option>O+</option>
+                                            <option>O-</option>
+                                            <option>AB+</option>
+                                            <option>AB-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold text-muted">ဖုန်းနံပါတ် (Phone Number)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fa-solid fa-phone"></i></span>
+                                        <input type="tel" class="form-control" placeholder="09xxxxxxxxx" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label fw-bold text-muted">အီးမေးလ် (Email)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fa-regular fa-envelope"></i></span>
+                                        <input type="email" class="form-control" placeholder="example@gmail.com" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 d-flex justify-content-between">
+                                <button type="button" class="btn btn-light fw-bold px-4 py-2 rounded-pill border" id="btnBack">
+                                    <i class="fa-solid fa-arrow-left me-2"></i> နောက်သို့
+                                </button>
+                                <button type="submit" class="btn text-white fw-bold px-4 py-2 rounded-pill" style="background: linear-gradient(135deg, var(--blood-red), var(--blood-dark)); box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4);">
+                                    အတည်ပြုမည် (Confirm) <i class="fa-solid fa-check ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // Initialize AOS animations
+        AOS.init({ once: true, offset: 100 });
+
+        // --- Multi-Step Form Logic ---
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const btnNext = document.getElementById('btnNext');
+        const btnBack = document.getElementById('btnBack');
+
+        // Inputs from Step 1 to validate before moving to Step 2
+        const centerSelect = document.getElementById('centerSelect');
+        const dateSelect = document.getElementById('dateSelect');
+        const timeSelect = document.getElementById('timeSelect');
+
+        btnNext.addEventListener('click', function() {
+            // Very basic frontend validation to ensure Step 1 is filled
+            if(centerSelect.value !== "" && dateSelect.value !== "" && timeSelect.value !== "") {
+                // Here, you will later add AJAX call to Backend to check availability.
+                // For now (UI Demo), we just hide Step 1 and show Step 2.
+                step1.classList.add('d-none');
+                step2.classList.remove('d-none');
+            } else {
+                alert("ကျေးဇူးပြု၍ နေရာ၊ ရက်စွဲ နှင့် အချိန်ကို အပြည့်အစုံ ရွေးချယ်ပေးပါ။");
+            }
+        });
+
+        btnBack.addEventListener('click', function() {
+            // Go back to Step 1
+            step2.classList.add('d-none');
+            step1.classList.remove('d-none');
+        });
+    </script>
+</body>
+</html>
