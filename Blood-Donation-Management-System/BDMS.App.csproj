@@ -7,4 +7,10 @@
     <RootNamespace>Blood_Donation_Management_System</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BDMS.Domain\BDMS.Domain.csproj" />
+    <ProjectReference Include="..\BDMS.Shared\BDMS.Shared.csproj" />
+    <ProjectReference Include="..\DBMS.Database\DBMS.Database.csproj" />
+  </ItemGroup>
+
 </Project>
