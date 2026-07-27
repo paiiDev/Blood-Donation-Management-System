@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BDMS.Shared\BDMS.Shared.csproj" />
     <ProjectReference Include="..\DBMS.Database\DBMS.Database.csproj" />
   </ItemGroup>

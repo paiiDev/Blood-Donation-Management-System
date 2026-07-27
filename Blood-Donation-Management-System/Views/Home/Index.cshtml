@@ -347,9 +347,13 @@
                                     <span class="input-group-text bg-light"><i class="fa-solid fa-hospital"></i></span>
                                     <select class="form-select" id="centerSelect" required>
                                         <option value="" selected disabled>အဆင်ပြေမည့် ဆေးရုံ/ဌာန ရွေးချယ်ပါ</option>
-                                        <option value="1">လွိုင်လင် ပြည်သူ့ဆေးရုံကြီး</option>
-                                        <option value="2">ပင်လုံ ပြည်သူ့ဆေးရုံကြီး</option>
-                                        <option value="3">နမ့်စန် ပြည်သူ့ဆေးရုံကြီး</option>
+                                        @if (ViewBag.DonationCenters != null)
+                                        {
+                                            foreach (var center in ViewBag.DonationCenters)
+                                            {
+                                                <option value="@center.Id">@center.CenterName</option>
+                                            }
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -448,35 +452,8 @@
     <script>
         // Initialize AOS animations
         AOS.init({ once: true, offset: 100 });
-
-        // --- Multi-Step Form Logic ---
-        const step1 = document.getElementById('step1');
-        const step2 = document.getElementById('step2');
-        const btnNext = document.getElementById('btnNext');
-        const btnBack = document.getElementById('btnBack');
-
-        // Inputs from Step 1 to validate before moving to Step 2
-        const centerSelect = document.getElementById('centerSelect');
-        const dateSelect = document.getElementById('dateSelect');
-        const timeSelect = document.getElementById('timeSelect');
-
-        btnNext.addEventListener('click', function() {
-            // Very basic frontend validation to ensure Step 1 is filled
-            if(centerSelect.value !== "" && dateSelect.value !== "" && timeSelect.value !== "") {
-                // Here, you will later add AJAX call to Backend to check availability.
-                // For now (UI Demo), we just hide Step 1 and show Step 2.
-                step1.classList.add('d-none');
-                step2.classList.remove('d-none');
-            } else {
-                alert("ကျေးဇူးပြု၍ နေရာ၊ ရက်စွဲ နှင့် အချိန်ကို အပြည့်အစုံ ရွေးချယ်ပေးပါ။");
-            }
-        });
-
-        btnBack.addEventListener('click', function() {
-            // Go back to Step 1
-            step2.classList.add('d-none');
-            step1.classList.remove('d-none');
-        });
     </script>
+
+    <script src="~/js/Booking.js" asp-append-version="true"></script>
 </body>
 </html>

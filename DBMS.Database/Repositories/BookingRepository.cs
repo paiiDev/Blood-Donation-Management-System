@@ -32,5 +32,9 @@ namespace DBMS.Database.Repositories
             return spResult ?? new AvailabilitySPResult { IsAvailable = false, Message = "Error, canno't find availibality." };
         } 
 
+        public async Task<IEnumerable<DonationCenter>> GetAllDonationCentersAsync(){
+            return await _context.DonationCenters.ToListAsync();
+        }
+
     }
 }

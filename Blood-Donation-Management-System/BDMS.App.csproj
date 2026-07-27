@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Blood_Donation_Management_System</RootNamespace>
+    <UserSecretsId>244cdeac-c5b0-4bb4-9417-31c5d8660c9d</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

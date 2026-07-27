@@ -11,5 +11,7 @@ namespace DBMS.Database.Interfaces
     public interface IBookingRepository
     {
         Task<AvailabilitySPResult> GetDailyAvailabilityAsync(int centerId, DateTime date);
+
+        Task<IEnumerable<DonationCenter>> GetAllDonationCentersAsync();
     }
 }
