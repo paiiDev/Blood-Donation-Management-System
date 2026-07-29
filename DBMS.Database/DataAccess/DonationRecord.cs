@@ -17,6 +17,8 @@ public partial class DonationRecord
 
     public int Volume { get; set; }
 
+    public string Status { get; set; } = null!;
+
     public virtual Appointment Appiontment { get; set; } = null!;
 
     public virtual BloodType BloodGroupTypeNavigation { get; set; } = null!;

@@ -36,5 +36,44 @@ namespace DBMS.Database.Repositories
             return await _context.DonationCenters.ToListAsync();
         }
 
+        public async Task<int?> GetBloodGroupIdByNameAsync(string groupName)
+        {
+            var bloodGroup = await _context.BloodTypes.FirstOrDefaultAsync(bg => bg.GroupName == groupName);
+            return bloodGroup?.Id;
+        }
+
+        public async Task<Donor> GetDonorByPhoneAsync(string phone)
+        {
+            return await _context.Donors.FirstOrDefaultAsync(d => d.Phone == phone);
+        }
+
+        public async Task<bool> SaveBookingTransactionAsync(Donor newDonor, int? existingDonorId, Appointment appointment)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                if (newDonor != null)
+                {
+                    _context.Donors.Add(newDonor);
+                    await _context.SaveChangesAsync();
+
+                    appointment.DonorId = newDonor.Id;
+                } else
+                {
+                    appointment.DonorId = existingDonorId!.Value;
+                }
+
+                _context.Appointments.Add(appointment);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                return false;
+            }
+        }
     }
 }

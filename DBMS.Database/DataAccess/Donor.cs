@@ -15,6 +15,8 @@ public partial class Donor
 
     public int? BloodGroupType { get; set; }
 
+    public bool IsDeleted { get; set; }
+
     public virtual Appointment? Appointment { get; set; }
 
     public virtual ICollection<DonationRecord> DonationRecords { get; set; } = new List<DonationRecord>();

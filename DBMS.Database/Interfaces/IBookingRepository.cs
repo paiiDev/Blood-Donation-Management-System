@@ -13,5 +13,13 @@ namespace DBMS.Database.Interfaces
         Task<AvailabilitySPResult> GetDailyAvailabilityAsync(int centerId, DateTime date);
 
         Task<IEnumerable<DonationCenter>> GetAllDonationCentersAsync();
+
+        Task<int?> GetBloodGroupIdByNameAsync(string groupName);
+
+        Task<Donor> GetDonorByPhoneAsync(string phone);
+
+        Task<bool> SaveBookingTransactionAsync(Donor newDonor, int? existingDoner, Appointment appointment);
+
+
     }
 }

@@ -29,6 +29,7 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<SystemAdmin> SystemAdmins { get; set; }
 
+  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Appointment>(entity =>
@@ -75,11 +76,13 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<DonationCenter>(entity =>
         {
             entity.Property(e => e.CenterName).HasMaxLength(100);
+            entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
         });
 
         modelBuilder.Entity<DonationRecord>(entity =>
         {
             entity.Property(e => e.DonationDate).HasColumnType("datetime");
+            entity.Property(e => e.Status).HasMaxLength(20);
 
             entity.HasOne(d => d.Appiontment).WithMany(p => p.DonationRecords)
                 .HasForeignKey(d => d.AppiontmentId)
@@ -101,13 +104,17 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_Doners");
 
+            entity.HasIndex(e => e.Id, "IX_Donors").IsUnique();
+
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.FullName).HasMaxLength(100);
+            entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
             entity.Property(e => e.Phone).HasMaxLength(20);
         });
 
         modelBuilder.Entity<SystemAdmin>(entity =>
         {
+            entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
             entity.Property(e => e.PasswordHash).HasMaxLength(255);
             entity.Property(e => e.Role).HasMaxLength(20);
             entity.Property(e => e.Username).HasMaxLength(50);

@@ -1,6 +1,7 @@
 ﻿using BDMS.Domain.Interfaces;
 using BDMS.Shared.DTOs.Booking;
 using BDMS.Shared.DTOs.Result;
+using DBMS.Database.DataAccess;
 using DBMS.Database.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,55 @@ namespace BDMS.Domain.Services
                 MaxCapacityPerDay = c.MaxCapacityPerDay
             });
             return Result<IEnumerable<DonationCenterDto>>.Success(centerDtos);
+        }
+
+        public async Task<Result<bool>> CreateBookingAsync(CreateBookingDto dto)
+        {
+      
+            var bloodGroupId = await _bookingRepo.GetBloodGroupIdByNameAsync(dto.BloodGroup);
+            if(bloodGroupId == null)
+            {
+                return Result<bool>.Failure("သွေးအုပ်စု မှားယွင်းနေပါသည်။");
+            }
+
+            var existingDonor = await _bookingRepo.GetDonorByPhoneAsync(dto.Phone);
+
+            Donor donorToSave = null;
+            int? existingDonorId = null;
+
+            if (existingDonor != null)
+            {
+                existingDonorId = existingDonor.Id;
+            } else
+            {
+                donorToSave = new Donor
+                {
+                    FullName = dto.FullName,
+                    Email = dto.Email,
+                    Phone = dto.Phone,
+                    BloodGroupType = bloodGroupId.Value
+                };
+            }
+
+            string bookingNumber = "BK-" + DateTime.Now.ToString("yyyyMMdd") + "-" + Guid.NewGuid().ToString().Substring(0, 4).ToUpper();
+
+            var appointment = new Appointment
+            {
+                CenterId = dto.CenterId,
+                AppointmentDate = DateOnly.FromDateTime(dto!.AppointmentDate!.Value),
+                TimeSlot = dto.TimeSlot.ToString(),
+                BookingNumber = bookingNumber,
+                Status = "Pending"
+            };
+
+            var isSaved = await _bookingRepo.SaveBookingTransactionAsync(donorToSave, existingDonorId, appointment);
+
+            if (isSaved)
+            {
+                return Result<bool>.Success(true);
+            }
+
+            return Result<bool>.Failure("စာရင်းသွင်းရာတွင် အမှားအယွင်းရှိပါသည်။");
         }
     }
 }

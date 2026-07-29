@@ -1,4 +1,5 @@
 ﻿using BDMS.Domain.Interfaces;
+using BDMS.Shared.DTOs.Booking;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blood_Donation_Management_System.Controllers
@@ -26,6 +27,22 @@ namespace Blood_Donation_Management_System.Controllers
             }
             return Json(new { isAvailable = true, message = "ရက်ချိန်းရယူ၍ ရပါသည်။" });
         }
-       
+
+        [HttpPost]
+        public async Task<IActionResult> CreateBooking([FromBody] CreateBookingDto dto)
+        {
+            if (dto == null || !ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "အချက်အလက်များ ပြည့်စုံမှုမရှိပါ။ ပြန်လည်စစ်ဆေးပေးပါ။" });
+            }
+
+            var result = await _bookingService.CreateBookingAsync(dto);
+            if (!result.IsSuccess)
+            {
+                return Json(new { isSuccess = false, message = result.ErrorMessage });
+            }
+            return Json(new { isSuccess = true, message = "Booking တင်ခြင်း အောင်မြင်ပါသည်။" });
+
+        }
     }
 }
