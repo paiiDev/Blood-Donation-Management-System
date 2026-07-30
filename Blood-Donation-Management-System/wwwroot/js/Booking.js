@@ -21,18 +21,18 @@
                     step1.classList.add('d-none');
                     step2.classList.remove('d-none');
                 } else {
-                    alert(result.message);
+                    Swal.fire({ icon: 'error', title: 'မရနိုင်ပါ', text: result.message, confirmButtonColor: '#d32f2f' });
                 }
             } catch (error) {
                 console.error("Error connecting to server:", error);
-                alert("စနစ်ချို့ယွင်းမှု ဖြစ်ပေါ်နေပါသည်။");
+                Swal.fire({ icon: 'error', title: 'ဆာဗာအမှား', text: 'စနစ်ချို့ယွင်းမှု ဖြစ်ပေါ်နေပါသည်။', confirmButtonColor: '#d32f2f' });
             } finally {
                 btnNext.innerHTML = originalText;
                 btnNext.disabled = false;
             }
 
         } else {
-            alert("ကျေးဇူးပြု၍ နေရာနှင့် ရက်စွဲကို အပြည့်အစုံ ရွေးချယ်ပေးပါ။");
+            Swal.fire({ icon: 'warning', title: 'သတိပေးချက်', text: 'ကျေးဇူးပြု၍ နေရာနှင့် ရက်စွဲကို အပြည့်အစုံ ရွေးချယ်ပေးပါ။', confirmButtonColor: '#d32f2f' });
         }
     });
 });
@@ -55,7 +55,7 @@ btnConfirm.addEventListener('click', async function (e) {
 
     
     if (!payload.FullName || !payload.Phone || !payload.BloodGroup) {
-        alert("ကျေးဇူးပြု၍ ကိုယ်ရေးအချက်အလက်များကို အပြည့်အစုံ ဖြည့်ပေးပါ။");
+        Swal.fire({ icon: 'warning', title: 'သတိပေးချက်', text: 'ကျေးဇူးပြု၍ ကိုယ်ရေးအချက်အလက်များကို အပြည့်အစုံ ဖြည့်ပေးပါ။', confirmButtonColor: '#d32f2f' });
         return;
     }
 
@@ -76,17 +76,16 @@ btnConfirm.addEventListener('click', async function (e) {
 
    
         let result = await response.json(); if (result.success) {
-            // အောင်မြင်ပါက Alert ပြပြီး Page ကို အစမှ ပြန်စမည် (သို့မဟုတ် Success Page သို့ သွားနိုင်သည်)
-            alert(result.message);
-            window.location.reload();
+            Swal.fire({ icon: 'success', title: 'အောင်မြင်ပါသည်', text: result.message, confirmButtonColor: '#d32f2f' }).then(() => {
+                window.location.reload();
+            });
         } else {
-            // ကျရှုံးပါက Service မှ ပြန်ပေးသော Error Message ကို ပြမည်
-            alert("Error: " + result.message);
+            Swal.fire({ icon: 'error', title: 'မအောင်မြင်ပါ', text: result.message, confirmButtonColor: '#d32f2f' });
         }
 
     } catch (error) {
         console.error("AJAX Error:", error);
-        alert("ဆာဗာနှင့် ဆက်သွယ်ရာတွင် အမှားအယွင်းရှိပါသည်။ ခေတ္တစောင့်ဆိုင်း၍ ပြန်လည်ကြိုးစားပါ။");
+        Swal.fire({ icon: 'error', title: 'ဆာဗာအမှား', text: 'ဆာဗာနှင့် ဆက်သွယ်ရာတွင် အမှားအယွင်းရှိပါသည်။ ခေတ္တစောင့်ဆိုင်း၍ ပြန်လည်ကြိုးစားပါ။', confirmButtonColor: '#d32f2f' });
     } finally {
        
         btnConfirm.innerHTML = originalText;
