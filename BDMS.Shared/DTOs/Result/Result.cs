@@ -8,9 +8,9 @@ namespace BDMS.Shared.DTOs.Result
 {
     public class Result<T>
     {
-        public bool IsSuccess { get; private set; }
-        public T Data { get; private set; }
-        public string ErrorMessage { get; private set; }
+        public bool IsSuccess { get; set; }
+        public T Data { get; set; }
+        public string ErrorMessage { get; set; }
 
         public static Result<T> Success(T data)
         {

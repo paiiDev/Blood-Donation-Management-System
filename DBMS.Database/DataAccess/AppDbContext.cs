@@ -29,12 +29,13 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<SystemAdmin> SystemAdmins { get; set; }
 
-  
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Appointment>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.HasIndex(e => e.BookingNumber, "IX_Appointments").IsUnique();
+
             entity.Property(e => e.BookingNumber).HasMaxLength(50);
             entity.Property(e => e.Status).HasMaxLength(20);
             entity.Property(e => e.TimeSlot).HasMaxLength(50);
@@ -44,10 +45,10 @@ public partial class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Center_ID_Appointments_CenterId");
 
-            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Appointment)
-                .HasForeignKey<Appointment>(d => d.Id)
+            entity.HasOne(d => d.Donor).WithMany(p => p.Appointments)
+                .HasForeignKey(d => d.DonorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Donors_Id_Appointments _DonorId");
+                .HasConstraintName("FK_Appointments_DonorID_Donors_ID");
         });
 
         modelBuilder.Entity<BloodInventory>(entity =>
@@ -84,27 +85,17 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.DonationDate).HasColumnType("datetime");
             entity.Property(e => e.Status).HasMaxLength(20);
 
-            entity.HasOne(d => d.Appiontment).WithMany(p => p.DonationRecords)
-                .HasForeignKey(d => d.AppiontmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Apoit_Id_DonationRecords_APoitId");
-
             entity.HasOne(d => d.BloodGroupTypeNavigation).WithMany(p => p.DonationRecords)
                 .HasForeignKey(d => d.BloodGroupType)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_BloodTypes_Id_DonationRecords_BoodGroupType");
-
-            entity.HasOne(d => d.Donor).WithMany(p => p.DonationRecords)
-                .HasForeignKey(d => d.DonorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Donors_Id_DonationRecords_DonorId");
         });
 
         modelBuilder.Entity<Donor>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Doners");
 
-            entity.HasIndex(e => e.Id, "IX_Donors").IsUnique();
+            entity.HasIndex(e => e.Phone, "IX_Donors_Phone").IsUnique();
 
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.FullName).HasMaxLength(100);
