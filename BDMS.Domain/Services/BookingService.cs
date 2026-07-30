@@ -51,6 +51,25 @@ namespace BDMS.Domain.Services
             return Result<IEnumerable<DonationCenterDto>>.Success(centerDtos);
         }
 
+        public async Task<Result<bool>> CheckPendingDonor(string phone, string email)
+        {
+            if (string.IsNullOrWhiteSpace(phone) || string.IsNullOrWhiteSpace(email))
+            {
+                return Result<bool>.Failure("ဖုန်းနံပါတ် သို့မဟုတ် အီးမေးလ် ထည့်သွင်းရန် လိုအပ်ပါသည်။");
+            }
+
+            bool hasPendingBooking = await _bookingRepo.HasPendingBookingAsync(phone, email);
+
+            if (hasPendingBooking)
+            {
+                return Result<bool>.Failure("လူကြီးမင်း၏ ယခင်စာရင်းသွင်းထားမှုမှာ အတည်ပြုရန် စောင့်ဆိုင်းဆဲ (Pending) အဆင့်တွင် ရှိနေဆဲဖြစ်သဖြင့် အသစ်ထပ်မံစာရင်းသွင်း၍ မရနိုင်သေးပါ။");
+            }
+            else
+            {
+                return Result<bool>.Success(true);
+            }
+        }
+
         public async Task<Result<bool>> CreateBookingAsync(CreateBookingDto dto)
         {
       
@@ -62,7 +81,7 @@ namespace BDMS.Domain.Services
 
             var existingDonor = await _bookingRepo.GetDonorByPhoneAsync(dto.Phone);
 
-            Donor donorToSave = null;
+            Donor? donorToSave = null;
             int? existingDonorId = null;
 
             if (existingDonor != null)
@@ -90,7 +109,7 @@ namespace BDMS.Domain.Services
                 Status = "Pending"
             };
 
-            var isSaved = await _bookingRepo.SaveBookingTransactionAsync(donorToSave, existingDonorId, appointment);
+            var isSaved = await _bookingRepo.SaveBookingTransactionAsync(donorToSave!, existingDonorId, appointment);
 
             if (isSaved)
             {

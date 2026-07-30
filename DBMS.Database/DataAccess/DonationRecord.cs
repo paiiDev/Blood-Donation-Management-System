@@ -19,11 +19,7 @@ public partial class DonationRecord
 
     public string Status { get; set; } = null!;
 
-    public virtual Appointment Appiontment { get; set; } = null!;
-
     public virtual BloodType BloodGroupTypeNavigation { get; set; } = null!;
 
     public virtual ICollection<BloodInventory> BloodInventories { get; set; } = new List<BloodInventory>();
-
-    public virtual Donor Donor { get; set; } = null!;
 }

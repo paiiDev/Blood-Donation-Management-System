@@ -17,7 +17,5 @@ public partial class Donor
 
     public bool IsDeleted { get; set; }
 
-    public virtual Appointment? Appointment { get; set; }
-
-    public virtual ICollection<DonationRecord> DonationRecords { get; set; } = new List<DonationRecord>();
+    public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 }

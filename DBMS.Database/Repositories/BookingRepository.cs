@@ -47,6 +47,16 @@ namespace DBMS.Database.Repositories
             return await _context.Donors.FirstOrDefaultAsync(d => d.Phone == phone);
         }
 
+        public async Task<bool> HasPendingBookingAsync(string phone, string email)
+        {
+            return await _context.Appointments
+                .Include(a => a.Donor)
+                .AnyAsync(a =>
+                    (a.Donor.Phone == phone || a.Donor.Email == email)
+                    && a.Status == "Pending"
+                );
+        }
+
         public async Task<bool> SaveBookingTransactionAsync(Donor newDonor, int? existingDonorId, Appointment appointment)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();

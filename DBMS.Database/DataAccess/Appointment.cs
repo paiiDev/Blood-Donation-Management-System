@@ -21,7 +21,5 @@ public partial class Appointment
 
     public virtual DonationCenter Center { get; set; } = null!;
 
-    public virtual ICollection<DonationRecord> DonationRecords { get; set; } = new List<DonationRecord>();
-
-    public virtual Donor IdNavigation { get; set; } = null!;
+    public virtual Donor Donor { get; set; } = null!;
 }

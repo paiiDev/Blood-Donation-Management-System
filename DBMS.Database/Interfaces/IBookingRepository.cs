@@ -17,6 +17,7 @@ namespace DBMS.Database.Interfaces
         Task<int?> GetBloodGroupIdByNameAsync(string groupName);
 
         Task<Donor> GetDonorByPhoneAsync(string phone);
+        Task<bool> HasPendingBookingAsync(string phone, string email);
 
         Task<bool> SaveBookingTransactionAsync(Donor newDonor, int? existingDoner, Appointment appointment);
 

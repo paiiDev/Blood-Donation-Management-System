@@ -33,7 +33,14 @@ namespace Blood_Donation_Management_System.Controllers
         {
             if (dto == null || !ModelState.IsValid)
             {
-                return Json(new { success = false, message = "အချက်အလက်များ ပြည့်စုံမှုမရှိပါ။ ပြန်လည်စစ်ဆေးပေးပါ။" });
+                return Json(new { isSuccess = false, message = "အချက်အလက်များ ပြည့်စုံမှုမရှိပါ။ ပြန်လည်စစ်ဆေးပေးပါ။" });
+            }
+
+            var hasPending = await _bookingService.CheckPendingDonor(dto.Phone.Trim(), dto.Email.Trim());
+
+            if (!hasPending.IsSuccess)
+            {
+                return Json(new { isSuccess = false, message = hasPending.ErrorMessage });
             }
 
             var result = await _bookingService.CreateBookingAsync(dto);
@@ -41,6 +48,7 @@ namespace Blood_Donation_Management_System.Controllers
             {
                 return Json(new { isSuccess = false, message = result.ErrorMessage });
             }
+
             return Json(new { isSuccess = true, message = "Booking တင်ခြင်း အောင်မြင်ပါသည်။" });
 
         }
