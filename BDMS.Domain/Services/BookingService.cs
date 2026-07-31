@@ -70,13 +70,13 @@ namespace BDMS.Domain.Services
             }
         }
 
-        public async Task<Result<bool>> CreateBookingAsync(CreateBookingDto dto)
+        public async Task<Result<string>> CreateBookingAsync(CreateBookingDto dto)
         {
       
             var bloodGroupId = await _bookingRepo.GetBloodGroupIdByNameAsync(dto.BloodGroup);
             if(bloodGroupId == null)
             {
-                return Result<bool>.Failure("သွေးအုပ်စု မှားယွင်းနေပါသည်။");
+                return Result<string>.Failure("သွေးအုပ်စု မှားယွင်းနေပါသည်။");
             }
 
             var existingDonor = await _bookingRepo.GetDonorByPhoneAsync(dto.Phone);
@@ -113,10 +113,10 @@ namespace BDMS.Domain.Services
 
             if (isSaved)
             {
-                return Result<bool>.Success(true);
+                return Result<string>.Success(bookingNumber);
             }
 
-            return Result<bool>.Failure("စာရင်းသွင်းရာတွင် အမှားအယွင်းရှိပါသည်။");
+            return Result<string>.Failure("စာရင်းသွင်းရာတွင် အမှားအယွင်းရှိပါသည်။");
         }
     }
 }

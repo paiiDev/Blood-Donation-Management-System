@@ -15,6 +15,6 @@ namespace BDMS.Domain.Interfaces
         Task<Result<IEnumerable<DonationCenterDto>>> GetAllDonationCentersAsync();
 
         Task<Result<bool>> CheckPendingDonor(string phone, string email);
-        Task<Result<bool>> CreateBookingAsync(CreateBookingDto dto);
+        Task<Result<string>> CreateBookingAsync(CreateBookingDto dto);
     }
 }

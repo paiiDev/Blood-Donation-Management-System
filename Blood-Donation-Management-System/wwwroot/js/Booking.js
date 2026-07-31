@@ -104,7 +104,36 @@
 
             let result = await response.json();
             if (result.isSuccess) {
-                Swal.fire({ icon: 'success', title: 'အောင်မြင်ပါသည်', text: result.message, confirmButtonColor: '#d32f2f' }).then(() => {
+                let bookingNumber = result.bookingNumber || 'BK-000000';
+                let donorEmail = payload.Email || '';
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'သွေးလှူရန် စာရင်းသွင်းမှု အောင်မြင်ပါသည်!',
+                    html:
+                        '<div class="text-center">' +
+                            '<p style="color:#555; font-size:15px; line-height:1.7; margin-top:6px;">' +
+                                'လူကြီးမင်း၏ သွေးလှူဒါန်းရန် ရက်ချိန်းရယူမှုကို <b style="color:#d32f2f;">လက်ခံရရှိပြီးဖြစ်ပါသည်</b>။<br>' +
+                                'တစ်စုံတစ်ယောက်၏ အသက်ကို ကယ်တင်ပေးနိုင်မည့် မွန်မြတ်သော ဆုံးဖြတ်ချက်အတွက် ဂုဏ်ယူပါသည်။' +
+                            '</p>' +
+                            '<div style="background:linear-gradient(135deg,#d32f2f,#8e0000); color:#fff; border-radius:14px; padding:18px 24px; margin:18px auto; max-width:320px; box-shadow:0 10px 28px rgba(211,47,47,.35);">' +
+                                '<div style="font-size:11px; letter-spacing:2.5px; opacity:.85; text-transform:uppercase;">Booking Number</div>' +
+                                '<div style="font-size:24px; font-weight:800; letter-spacing:1.5px; margin-top:5px; font-family:Consolas, monospace;">' + bookingNumber + '</div>' +
+                                '<div style="font-size:11px; opacity:.8; margin-top:6px;"><i class="fa-solid fa-circle-check me-1"></i> အတည်ပြုပြီး</div>' +
+                            '</div>' +
+                            '<div style="background:#fff5f5; border:1px solid #ffd6d6; border-radius:10px; padding:12px 16px; margin:0 auto; max-width:340px;">' +
+                                '<p style="color:#8e0000; font-size:13.5px; line-height:1.6; margin:0;">' +
+                                    '<i class="fa-regular fa-envelope me-1"></i>' +
+                                    'သင့် Booking Number အပါအဝင် အသေးစိတ်အချက်အလက်များကို <b style="word-break:break-all;">' + donorEmail + '</b> သို့ အီးမေးလ်မှတစ်ဆင့် ပို့ဆောင်ပေးပါမည်။' +
+                                '</p>' +
+                            '</div>' +
+                        '</div>',
+                    showConfirmButton: true,
+                    confirmButtonText: '<i class="fa-solid fa-handshake me-2"></i>အားလုံး အဆင်ပြေပါသည်',
+                    confirmButtonColor: '#d32f2f',
+                    allowOutsideClick: false,
+                    backdrop: 'rgba(0,0,0,0.55)'
+                }).then(() => {
                     window.location.reload();
                 });
             } else {

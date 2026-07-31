@@ -49,7 +49,7 @@ namespace Blood_Donation_Management_System.Controllers
                 return Json(new { isSuccess = false, message = result.ErrorMessage });
             }
 
-            return Json(new { isSuccess = true, message = "Booking တင်ခြင်း အောင်မြင်ပါသည်။" });
+            return Json(new { isSuccess = true, message = "Booking တင်ခြင်း အောင်မြင်ပါသည်။", bookingNumber = result.Data });
 
         }
     }
