@@ -4,11 +4,20 @@
     const step2 = document.getElementById('step2');
     const centerSelect = document.getElementById('centerSelect');
     const dateSelect = document.getElementById('dateSelect');
+    const timeSelect = document.getElementById('timeSelect');
     const phoneInput = document.getElementById('phone');
     const emailInput = document.getElementById('email');
 
+    dateSelect.min = new Date().toISOString().split('T')[0];
+
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (m) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+        });
+    }
+
     btnNext.addEventListener('click', async function () {
-        if (centerSelect.value !== "" && dateSelect.value !== "") {
+        if (centerSelect.value !== "" && dateSelect.value !== "" && timeSelect.value !== "") {
 
             let originalText = btnNext.innerHTML;
             btnNext.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> စစ်ဆေးနေပါသည်...';
@@ -34,7 +43,7 @@
             }
 
         } else {
-            Swal.fire({ icon: 'warning', title: 'သတိပေးချက်', text: 'ကျေးဇူးပြု၍ နေရာနှင့် ရက်စွဲကို အပြည့်အစုံ ရွေးချယ်ပေးပါ။', confirmButtonColor: '#d32f2f' });
+            Swal.fire({ icon: 'warning', title: 'သတိပေးချက်', text: 'ကျေးဇူးပြု၍ နေရာ၊ ရက်စွဲနှင့် အချိန်ကို အပြည့်အစုံ ရွေးချယ်ပေးပါ။', confirmButtonColor: '#d32f2f' });
         }
     });
 
@@ -56,9 +65,11 @@
     });
 
     const btnConfirm = document.getElementById('btnConfirm');
+    let isSubmitting = false;
 
     btnConfirm.addEventListener('click', async function (e) {
         e.preventDefault();
+        if (isSubmitting) return;
 
         let payload = {
             CenterId: parseInt(document.getElementById('centerSelect').value),
@@ -71,7 +82,7 @@
         };
 
 
-        if (!payload.FullName || !payload.Phone || !payload.BloodGroup) {
+        if (!payload.FullName || !payload.Phone || !payload.Email || !payload.BloodGroup) {
             Swal.fire({ icon: 'warning', title: 'သတိပေးချက်', text: 'ကျေးဇူးပြု၍ ကိုယ်ရေးအချက်အလက်များကို အပြည့်အစုံ ဖြည့်ပေးပါ။', confirmButtonColor: '#d32f2f' });
             return;
         }
@@ -90,6 +101,7 @@
         let originalText = btnConfirm.innerHTML;
         btnConfirm.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> အတည်ပြုနေပါသည်...';
         btnConfirm.disabled = true;
+        isSubmitting = true;
 
         try {
 
@@ -105,11 +117,11 @@
             let result = await response.json();
             if (result.isSuccess) {
                 let bookingNumber = result.bookingNumber || 'BK-000000';
-                let donorEmail = payload.Email || '';
+                let donorEmail = escapeHtml(payload.Email || '');
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'သွေးလှူရန် စာရင်းသွင်းမှု အောင်မြင်ပါသည်!',
+                    title: 'စာရင်းသွင်းမှု အောင်မြင်ပါသည်!',
                     html:
                         '<div class="text-center">' +
                             '<p style="color:#555; font-size:15px; line-height:1.7; margin-top:6px;">' +
@@ -119,7 +131,7 @@
                             '<div style="background:linear-gradient(135deg,#d32f2f,#8e0000); color:#fff; border-radius:14px; padding:18px 24px; margin:18px auto; max-width:320px; box-shadow:0 10px 28px rgba(211,47,47,.35);">' +
                                 '<div style="font-size:11px; letter-spacing:2.5px; opacity:.85; text-transform:uppercase;">Booking Number</div>' +
                                 '<div style="font-size:24px; font-weight:800; letter-spacing:1.5px; margin-top:5px; font-family:Consolas, monospace;">' + bookingNumber + '</div>' +
-                                '<div style="font-size:11px; opacity:.8; margin-top:6px;"><i class="fa-solid fa-circle-check me-1"></i> အတည်ပြုပြီး</div>' +
+                                '<div style="font-size:11px; opacity:.8; margin-top:6px;"><i class="fa-solid fa-circle-check me-1"></i> အတည်ပြုဆဲ</div>' +
                             '</div>' +
                             '<div style="background:#fff5f5; border:1px solid #ffd6d6; border-radius:10px; padding:12px 16px; margin:0 auto; max-width:340px;">' +
                                 '<p style="color:#8e0000; font-size:13.5px; line-height:1.6; margin:0;">' +
@@ -147,6 +159,7 @@
 
             btnConfirm.innerHTML = originalText;
             btnConfirm.disabled = false;
+            isSubmitting = false;
         }
     });
 

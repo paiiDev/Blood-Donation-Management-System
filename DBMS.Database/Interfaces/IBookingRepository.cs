@@ -19,7 +19,7 @@ namespace DBMS.Database.Interfaces
         Task<Donor> GetDonorByPhoneAsync(string phone);
         Task<bool> HasPendingBookingAsync(string phone, string email);
 
-        Task<bool> SaveBookingTransactionAsync(Donor newDonor, int? existingDoner, Appointment appointment);
+        Task<bool> SaveBookingTransactionAsync(Donor newDonor, int? existingDonor, Appointment appointment);
 
 
     }

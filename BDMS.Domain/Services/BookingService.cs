@@ -23,7 +23,7 @@ namespace BDMS.Domain.Services
         {
             if( date.Date < DateTime.Now.Date)
             {
-                return Result<bool>.Failure("Cannot select previous date for booking.");
+                return Result<bool>.Failure("ယမန်နေ့ (သို့မဟုတ်) အတိတ်ရက်စွဲကို ရွေးချယ်၍ မရနိုင်ပါ။");
             }
 
             var result = await _bookingRepo.GetDailyAvailabilityAsync(centerId, date);
@@ -72,7 +72,17 @@ namespace BDMS.Domain.Services
 
         public async Task<Result<string>> CreateBookingAsync(CreateBookingDto dto)
         {
-      
+            if (dto == null || dto.AppointmentDate == null)
+            {
+                return Result<string>.Failure("ရက်စွဲ ထည့်သွင်းရန် လိုအပ်ပါသည်။");
+            }
+
+            var availability = await CheckDailyAvailabilityAsync(dto.CenterId, dto.AppointmentDate.Value);
+            if (!availability.IsSuccess)
+            {
+                return Result<string>.Failure(availability.ErrorMessage);
+            }
+
             var bloodGroupId = await _bookingRepo.GetBloodGroupIdByNameAsync(dto.BloodGroup);
             if(bloodGroupId == null)
             {
@@ -103,7 +113,7 @@ namespace BDMS.Domain.Services
             var appointment = new Appointment
             {
                 CenterId = dto.CenterId,
-                AppointmentDate = DateOnly.FromDateTime(dto!.AppointmentDate!.Value),
+                AppointmentDate = DateOnly.FromDateTime(dto.AppointmentDate.Value),
                 TimeSlot = dto.TimeSlot.ToString(),
                 BookingNumber = bookingNumber,
                 Status = "Pending"

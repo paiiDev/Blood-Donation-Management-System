@@ -2,6 +2,7 @@
 using Dapper;
 using DBMS.Database.DataAccess;
 using DBMS.Database.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,15 +22,28 @@ namespace DBMS.Database.Repositories
 
         public async Task<AvailabilitySPResult> GetDailyAvailabilityAsync(int centerId, DateTime date)
         {
-            using var connection = _context.Database.GetDbConnection();
+            var connectionString = _context.Database.GetConnectionString();
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                return new AvailabilitySPResult { IsAvailable = false, Message = "ဒေတာဘေ့စ် ချိတ်ဆက်မှု မရရှိနိုင်ပါ။" };
+            }
+
+            using var connection = new SqlConnection(connectionString);
 
             var parameters = new DynamicParameters();
             parameters.Add("@CenterId", centerId);
             parameters.Add("@AppointmentDate", date.Date);
 
-            var spResult = await connection.QueryFirstOrDefaultAsync<AvailabilitySPResult>("CheckDailyAvailability", parameters, commandType: System.Data.CommandType.StoredProcedure);
+            try
+            {
+                var spResult = await connection.QueryFirstOrDefaultAsync<AvailabilitySPResult>("CheckDailyAvailability", parameters, commandType: System.Data.CommandType.StoredProcedure);
 
-            return spResult ?? new AvailabilitySPResult { IsAvailable = false, Message = "Error, canno't find availibality." };
+                return spResult ?? new AvailabilitySPResult { IsAvailable = false, Message = "ဤဌာနအတွက် ရရှိနိုင်မှု အချက်အလက်များကို ရှာဖွေ၍ မရပါ။" };
+            }
+            catch (Exception)
+            {
+                return new AvailabilitySPResult { IsAvailable = false, Message = "ဤဌာနအတွက် ရရှိနိုင်မှု အချက်အလက်များကို ရှာဖွေ၍ မရပါ။" };
+            }
         } 
 
         public async Task<IEnumerable<DonationCenter>> GetAllDonationCentersAsync(){
