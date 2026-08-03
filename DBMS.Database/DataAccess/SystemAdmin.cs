@@ -13,9 +13,9 @@ public partial class SystemAdmin
 
     public string Role { get; set; } = null!;
 
-    public int CenterId { get; set; }
+    public int? CenterId { get; set; }
 
     public bool IsDeleted { get; set; }
 
-    public virtual DonationCenter Center { get; set; } = null!;
+    public virtual DonationCenter? Center { get; set; }
 }

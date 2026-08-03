@@ -29,6 +29,7 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<SystemAdmin> SystemAdmins { get; set; }
 
+   
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -106,13 +107,12 @@ public partial class AppDbContext : DbContext
         modelBuilder.Entity<SystemAdmin>(entity =>
         {
             entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
-            entity.Property(e => e.PasswordHash).HasMaxLength(255);
+            entity.Property(e => e.PasswordHash).HasMaxLength(100);
             entity.Property(e => e.Role).HasMaxLength(20);
             entity.Property(e => e.Username).HasMaxLength(50);
 
             entity.HasOne(d => d.Center).WithMany(p => p.SystemAdmins)
                 .HasForeignKey(d => d.CenterId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_DonationCenters_Id_SystemAdmins_CenterId");
         });
 
