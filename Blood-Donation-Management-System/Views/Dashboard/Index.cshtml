@@ -1,0 +1,221 @@
+﻿@using System.Security.Claims
+@{
+    Layout = "_DashboardLayout";
+    ViewData["Title"] = "Dashboard";
+    var username = User.Identity?.Name ?? "Admin";
+    var role = User.FindFirstValue(ClaimTypes.Role) ?? "Staff";
+}
+
+<div class="page-header d-print-none">
+    <div class="row align-items-center">
+        <div class="col">
+            <div class="page-pretitle">Overview</div>
+            <h2 class="page-title">Dashboard</h2>
+        </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <a asp-controller="Home" asp-action="Index" class="btn btn-primary d-none d-sm-inline-block">
+                    <i class="fa-solid fa-plus me-1"></i>New Booking
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.WelcomeMessage != null)
+{
+    <div class="alert alert-primary d-flex align-items-center" role="alert">
+        <i class="fa-solid fa-circle-check me-2"></i>
+        <div>@ViewBag.WelcomeMessage</div>
+    </div>
+}
+
+<div class="row row-deck row-cards">
+
+    <!-- Stat: Total Donors -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="subheader">Total Donors</div>
+                    <div class="ms-auto stat-icon" style="background: linear-gradient(135deg,#d32f2f,#9a0007);"><i class="fa-solid fa-users"></i></div>
+                </div>
+                <div class="h1 mb-3">1,248</div>
+                <div class="d-flex mb-2">
+                    <div><span class="badge bg-green-lt"><i class="fa-solid fa-arrow-trend-up me-1"></i>+5.2%</span></div>
+                    <div class="ms-auto text-secondary">vs last month</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stat: Total Appointments -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="subheader">Total Appointments</div>
+                    <div class="ms-auto stat-icon" style="background: linear-gradient(135deg,#ef5350,#d32f2f);"><i class="fa-solid fa-calendar-check"></i></div>
+                </div>
+                <div class="h1 mb-3">3,692</div>
+                <div class="d-flex mb-2">
+                    <div><span class="badge bg-green-lt"><i class="fa-solid fa-arrow-trend-up me-1"></i>+2.8%</span></div>
+                    <div class="ms-auto text-secondary">vs last month</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stat: Pending Bookings -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="subheader">Pending Bookings</div>
+                    <div class="ms-auto stat-icon" style="background: linear-gradient(135deg,#ffb74d,#f57c00);"><i class="fa-solid fa-hourglass-half"></i></div>
+                </div>
+                <div class="h1 mb-3">184</div>
+                <div class="d-flex mb-2">
+                    <div><span class="badge bg-yellow-lt"><i class="fa-solid fa-clock me-1"></i>needs review</span></div>
+                    <div class="ms-auto text-secondary">awaiting approval</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stat: Blood Units -->
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="subheader">Blood Units</div>
+                    <div class="ms-auto stat-icon" style="background: linear-gradient(135deg,#66bb6a,#2e7d32);"><i class="fa-solid fa-boxes-stacked"></i></div>
+                </div>
+                <div class="h1 mb-3">2,051</div>
+                <div class="d-flex mb-2">
+                    <div><span class="badge bg-green-lt"><i class="fa-solid fa-check me-1"></i>healthy stock</span></div>
+                    <div class="ms-auto text-secondary">across all centers</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent bookings table -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fa-solid fa-list-ul me-2 text-danger"></i>Recent Bookings</h3>
+                <div class="card-actions">
+                    <a href="#" class="btn btn-link text-danger">View all</a>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-vcenter card-table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Booking No</th>
+                            <th>Donor</th>
+                            <th>Blood Group</th>
+                            <th>Center</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>BK-20260802-A1B2</code></td>
+                            <td>Maung Maung</td>
+                            <td><span class="badge badge-outline text-danger">O+</span></td>
+                            <td>Yangon General Hospital</td>
+                            <td>2026-08-05</td>
+                            <td><span class="badge bg-yellow-lt">Pending</span></td>
+                        </tr>
+                        <tr>
+                            <td><code>BK-20260802-C3D4</code></td>
+                            <td>Su Su Aye</td>
+                            <td><span class="badge badge-outline text-danger">A+</span></td>
+                            <td>Mandalay General Hospital</td>
+                            <td>2026-08-04</td>
+                            <td><span class="badge bg-green-lt">Approved</span></td>
+                        </tr>
+                        <tr>
+                            <td><code>BK-20260801-E5F6</code></td>
+                            <td>Kyaw Kyaw</td>
+                            <td><span class="badge badge-outline text-danger">B+</span></td>
+                            <td>Naypyidaw General Hospital</td>
+                            <td>2026-08-03</td>
+                            <td><span class="badge bg-green-lt">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td><code>BK-20260801-G7H8</code></td>
+                            <td>Hnin Hnin Wai</td>
+                            <td><span class="badge badge-outline text-danger">AB-</span></td>
+                            <td>Yangon General Hospital</td>
+                            <td>2026-08-02</td>
+                            <td><span class="badge bg-yellow-lt">Pending</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blood inventory by group -->
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fa-solid fa-droplet me-2 text-danger"></i>Blood Stock by Group</h3>
+            </div>
+            <div class="card-body">
+                @{
+                    var groups = new[]
+                    {
+                        new { G = "O+", Pct = 85, Units = 340 },
+                        new { G = "O-", Pct = 55, Units = 220 },
+                        new { G = "A+", Pct = 70, Units = 280 },
+                        new { G = "A-", Pct = 45, Units = 180 },
+                        new { G = "B+", Pct = 62, Units = 248 },
+                        new { G = "B-", Pct = 40, Units = 160 },
+                        new { G = "AB+", Pct = 35, Units = 140 },
+                        new { G = "AB-", Pct = 28, Units = 112 }
+                    };
+                }
+                @foreach (var g in groups)
+                {
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="badge badge-outline text-danger me-3" style="min-width: 52px;">@g.G</span>
+                        <div class="progress flex-fill" style="height: 10px;">
+                            <div class="progress-bar" style="width: @g.Pct%; background: linear-gradient(90deg,#d32f2f,#9a0007);"></div>
+                        </div>
+                        <span class="ms-3 text-secondary small text-nowrap">@g.Units units</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Welcome / quick info card -->
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-body d-flex flex-column">
+                <h3 class="card-title"><i class="fa-solid fa-hand-holding-heart me-2 text-danger"></i>Welcome, @username</h3>
+                <p class="text-secondary" style="line-height: 1.7;">
+                    သွေးလှူဒါန်းမှု စီမံခန့်ခွဲမှုစနစ်မှ ကြိုဆိုပါသည်။
+                    သင့်၏ <b>@role</b> အခန်းကဏ္ဍဖြင့်
+                    ရက်ချိန်းများ၊ လှူဒါန်းမှုမှတ်တမ်းများနှင့် သွေးအရန်သိုလှောင်မှုများကို
+                    စီမံခန့်ခွဲနိုင်ပါသည်။
+                </p>
+                <div class="mt-auto pt-3">
+                    <div class="card bg-danger-lt p-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-circle-exclamation text-danger fa-xl"></i>
+                            <div class="small">
+                                Pending စာရင်းများကို နေ့စဉ် စစ်ဆေးပြီး အတည်ပြုပေးရန် အကြံပြုပါသည်။
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+@model BDMS.Shared.DTOs.Auth.LoginDto
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Login";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+
+<div class="auth-brand">
+    <div class="auth-logo"><i class="fa-solid fa-droplet"></i></div>
+    <h1>Save Life</h1>
+    <p>Blood Donation Management System</p>
+</div>
+
+@if (ViewBag.LoginError != null)
+{
+    <div class="auth-error">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>@ViewBag.LoginError</span>
+    </div>
+}
+
+<form asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@returnUrl" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger small"></div>
+
+    <div class="auth-field">
+        <label asp-for="Username">Username</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+            <input asp-for="Username" class="form-control" placeholder="အကောင့် အမည် ထည့်သွင်းပါ" autocomplete="username" autofocus />
+        </div>
+        <span asp-validation-for="Username" class="text-danger small"></span>
+    </div>
+
+    <div class="auth-field">
+        <label asp-for="Password">Password</label>
+        <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+            <input asp-for="Password" class="form-control" placeholder="စကားဝှက် ထည့်သွင်းပါ" autocomplete="current-password" />
+            <button type="button" class="btn btn-outline-secondary" id="togglePassword" tabindex="-1" title="Show/Hide password">
+                <i class="fa-regular fa-eye"></i>
+            </button>
+        </div>
+        <span asp-validation-for="Password" class="text-danger small"></span>
+    </div>
+
+    <button type="submit" class="auth-btn">
+        <i class="fa-solid fa-right-to-bracket me-2"></i>ဝင်ရောက်မည် (Sign In)
+    </button>
+</form>
+
+<div class="auth-foot">
+    &copy; 2026 Save Life &middot; <a asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house me-1"></i>ပင်မစာမျက်နှာသို့</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            var input = document.getElementById('Password');
+            var icon = this.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-regular', 'fa-solid');
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-solid', 'fa-regular');
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    </script>
+}
