@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Save Life</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root {
+            --blood-red: #d32f2f;
+            --blood-dark: #9a0007;
+        }
+
+        .auth-body {
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0, 0, 0, 0.35) 0%, transparent 55%),
+                linear-gradient(135deg, #5c0003 0%, var(--blood-dark) 40%, var(--blood-red) 100%);
+            background-attachment: fixed;
+            font-family: 'Pyidaungsu', 'Padauk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-body::before,
+        .auth-body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(6px);
+            opacity: 0.18;
+        }
+
+        .auth-body::before {
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, #ff8a80, transparent 70%);
+            top: -120px;
+            left: -120px;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .auth-body::after {
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(circle, #ff5252, transparent 70%);
+            bottom: -160px;
+            right: -120px;
+            animation: pulse 10s ease-in-out infinite reverse;
+        }
+
+        @@keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .auth-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(14px);
+            border-radius: 24px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+            padding: 40px 36px 32px;
+            animation: cardIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @@keyframes cardIn {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-brand {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .auth-logo {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--blood-red), var(--blood-dark));
+            border-radius: 20px;
+            box-shadow: 0 12px 28px rgba(211, 47, 47, 0.45);
+        }
+
+        .auth-logo i {
+            animation: beat 1.6s ease-in-out infinite;
+        }
+
+        @@keyframes beat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.12); }
+            40% { transform: scale(0.98); }
+        }
+
+        .auth-brand h1 {
+            font-weight: 800;
+            color: var(--blood-dark);
+            margin: 0;
+            font-size: 1.7rem;
+        }
+
+        .auth-brand p {
+            color: #8a8a8a;
+            margin: 4px 0 0;
+            font-size: 0.85rem;
+        }
+
+        .auth-error {
+            background: #fdecea;
+            border: 1px solid #f5c6cb;
+            color: #a71d2a;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-field {
+            margin-bottom: 18px;
+        }
+
+        .auth-field label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #444;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .auth-field .input-group-text {
+            background: #fff;
+            border-right: 0;
+            color: var(--blood-red);
+        }
+
+        .auth-field .form-control {
+            border-left: 0;
+            padding: 10px 14px;
+        }
+
+        .auth-field .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(211, 47, 47, 0.12);
+            border-color: var(--blood-red);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            background: linear-gradient(135deg, var(--blood-red), var(--blood-dark));
+            box-shadow: 0 10px 24px rgba(211, 47, 47, 0.4);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(211, 47, 47, 0.5);
+        }
+
+        .auth-foot {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.78rem;
+            margin: 22px 0 0;
+        }
+
+        .auth-foot a {
+            color: var(--blood-red);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .access-icon {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 44px;
+            color: #fff;
+            background: linear-gradient(135deg, var(--blood-red), var(--blood-dark));
+            border-radius: 50%;
+            box-shadow: 0 14px 30px rgba(211, 47, 47, 0.45);
+            animation: shake 0.8s ease-in-out;
+        }
+
+        @@keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+
+        .text-danger-strong {
+            color: var(--blood-dark);
+        }
+    </style>
+</head>
+<body class="auth-body">
+    <div class="auth-card">
+        @RenderBody()
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

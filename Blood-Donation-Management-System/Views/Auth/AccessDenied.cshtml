@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="text-center">
+    <div class="access-icon"><i class="fa-solid fa-lock"></i></div>
+
+    <h2 class="fw-bold text-danger-strong mb-2">ခွင့်ပြုချက် မရှိပါ (Access Denied)</h2>
+    <p class="text-muted mb-4" style="line-height: 1.7;">
+        လူကြီးမင်းသည် ဤစာမျက်နှာကို ဝင်ရောက်ကြည့်ရှုရန်
+        <b class="text-danger-strong">ခွင့်ပြုချက် (Permission)</b> မရှိပါ။<br />
+        လိုအပ်ပါက System Admin ကို ဆက်သွယ်ပါ။
+    </p>
+
+    <div class="d-flex flex-column gap-2">
+        <a asp-controller="Auth" asp-action="Login" class="auth-btn text-center text-decoration-none">
+            <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>ဝင်ရောက်မည်
+        </a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-pill py-2">
+            <i class="fa-solid fa-house me-2"></i>ပင်မစာမျက်နှာသို့
+        </a>
+    </div>
+</div>

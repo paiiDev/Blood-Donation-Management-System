@@ -56,9 +56,9 @@ namespace DBMS.Database.Repositories
             return bloodGroup?.Id;
         }
 
-        public async Task<Donor> GetDonorByPhoneAsync(string phone)
+        public async Task<Donor?> GetDonorByPhoneAsync(string phone)
         {
-            return await _context.Donors.FirstOrDefaultAsync(d => d.Phone == phone);
+            return await _context.Donors.AsNoTracking().FirstOrDefaultAsync(d => d.Phone == phone);
         }
 
         public async Task<bool> HasPendingBookingAsync(string phone, string email)
