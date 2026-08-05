@@ -16,7 +16,7 @@
             var body = new URLSearchParams();
             body.append('__RequestVerificationToken', token);
 
-            fetch('/Auth/Logout', {
+    fetch('/Auth/Logout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: body.toString()
