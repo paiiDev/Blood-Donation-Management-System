@@ -238,3 +238,75 @@ body {
     display: inline-block;
     margin-bottom: 20px;
 }
+
+/* Infotainment Gallery */
+.gallery-card {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    height: 280px;
+    cursor: pointer;
+}
+
+.gallery-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.gallery-card:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--blood-red);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(154, 0, 7, 0.92), rgba(211, 47, 47, 0.35) 60%, transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    color: white;
+}
+
+.gallery-card:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.gallery-overlay h5 {
+    font-weight: 700;
+    transform: translateY(10px);
+    transition: transform 0.4s ease;
+}
+
+.gallery-overlay p {
+    margin: 5px 0 0 0;
+    font-size: 0.9rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: 0.4s ease 0.1s;
+}
+
+    .gallery-card:hover .gallery-overlay h5,
+    .gallery-card:hover .gallery-overlay p {
+        transform: translateY(0);
+        opacity: 1;
+    }
