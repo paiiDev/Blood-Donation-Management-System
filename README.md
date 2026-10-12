@@ -4,6 +4,19 @@ A web-based blood donation management system built with ASP.NET Core (MVC) and E
 
 The user-facing UI is in Myanmar (Burmese); the admin panel uses English.
 
+## Screenshots
+
+### Landing page
+![Blood donation landing page](images/blood-donation.png)
+
+### Booking flow
+| Step 1 – Center, date & time | Step 2 – Donor details |
+|------------------------------|------------------------|
+| ![Booking form](images/booking%20form.png) | ![Booking form filled](images/booking%20fill%20form.png) |
+
+### Booking confirmation
+![Booking success](images/booking%20success.png)
+
 ## Features
 
 ### Public booking flow
