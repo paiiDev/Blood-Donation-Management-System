@@ -14,7 +14,7 @@ namespace Blood_Donation_Management_System.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
